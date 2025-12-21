@@ -39,7 +39,7 @@ jobs:
       - name: Install Required Android SDK Components
         run: |
           echo "Installing Android SDK components..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34" "build-tools;34.0.0" 2>&1 || true
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-33" "build-tools;33.0.2" 2>&1 | head -20 || true
           echo "SDK components ready"
 
       - name: Install node dependencies

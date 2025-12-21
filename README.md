@@ -24,7 +24,7 @@ android/app/build/outputs/apk/release/app-release-unsigned.apk
 
 ### المتطلبات الأساسية
 
-1. **Java Development Kit (JDK)** - الإصدار 11 أو أحدث
+1. **Java Development Kit (JDK)** - الإصدار 11 أو أحدث (يُنصح بـ JDK 17+ للإصدارات الحديثة من Android Gradle Plugin)
 2. **Android SDK** - مثبت عبر Android Studio
 3. **Node.js & pnpm** - لبناء تطبيق الويب
 

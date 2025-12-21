@@ -28,7 +28,7 @@ android/app/build/outputs/apk/debug/app-debug.apk
 
 ### 1. تثبيت المتطلبات / Install Requirements
 
-- Java JDK 11+
+- Java JDK 11+ (JDK 17+ recommended for modern Android Gradle Plugin versions)
 - Android SDK (via Android Studio)
 - Node.js & pnpm
 

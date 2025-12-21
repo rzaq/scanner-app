@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "build:apk": "pnpm run build && npx cap sync android && cd android && ./gradlew assembleDebug && cd .. && echo '\n✅ APK built successfully!\n📦 Location: android/app/build/outputs/apk/debug/app-debug.apk'",
-    "build:apk:release": "pnpm run build && npx cap sync android && cd android && ./gradlew assembleRelease && cd .. && echo '\n✅ Release APK built successfully!\n📦 Location: android/app/build/outputs/apk/release/app-release-unsigned.apk'",
+    "build:apk": "pnpm run build && npx cap sync android && (cd android && ./gradlew assembleDebug) && echo '\n✅ APK built successfully!\n📦 Location: android/app/build/outputs/apk/debug/app-debug.apk'",
+    "build:apk:release": "pnpm run build && npx cap sync android && (cd android && ./gradlew assembleRelease) && echo '\n✅ Release APK built successfully!\n📦 Location: android/app/build/outputs/apk/release/app-release-unsigned.apk'",
     "android:sync": "npx cap sync android",
     "android:open": "npx cap open android",
     "start": "NODE_ENV=production node dist/index.js",

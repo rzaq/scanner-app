@@ -6,7 +6,43 @@
 2. **Android SDK** - مثبت عبر Android Studio
 3. **Gradle** - سيتم تثبيته تلقائياً
 
-## خطوات البناء
+## الطريقة السريعة (مستحسنة)
+
+### بناء APK للتطوير (Debug)
+
+```bash
+npm run build:apk
+```
+
+أو باستخدام pnpm:
+
+```bash
+pnpm run build:apk
+```
+
+سيتم إنشاء الملف في:
+```
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### بناء APK للإصدار (Release)
+
+```bash
+npm run build:apk:release
+```
+
+أو باستخدام pnpm:
+
+```bash
+pnpm run build:apk:release
+```
+
+سيتم إنشاء الملف في:
+```
+android/app/build/outputs/apk/release/app-release-unsigned.apk
+```
+
+## خطوات البناء (الطريقة اليدوية)
 
 ### 1. التحقق من المتطلبات
 
@@ -93,6 +129,18 @@ export ANDROID_SDK_ROOT=/path/to/android/sdk
 ```bash
 java -version
 ```
+
+## قائمة أوامر NPM المتاحة
+
+| الأمر | الوصف |
+|-------|-------|
+| `npm run build:apk` | بناء ملف APK للتطوير (جميع الخطوات تلقائياً) |
+| `npm run build:apk:release` | بناء ملف APK للإصدار (جميع الخطوات تلقائياً) |
+| `npm run cap:sync` | مزامنة الملفات مع مشروع Android |
+| `npm run android:build` | بناء APK للتطوير فقط (بدون بناء الويب) |
+| `npm run android:release` | بناء APK للإصدار فقط (بدون بناء الويب) |
+
+**ملاحظة**: يمكنك استخدام `pnpm` بدلاً من `npm` في جميع الأوامر.
 
 ## الملفات الناتجة
 

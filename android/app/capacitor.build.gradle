@@ -7,7 +7,17 @@ android {
   }
 }
 
-apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
+try {
+  apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
+} catch (Exception e) {
+  logger.info("Cordova variables file not found, using defaults")
+  ext {
+    cdvMinSdkVersion = project.hasProperty('minSdkVersion') ? rootProject.ext.minSdkVersion : 24
+    cdvPluginPostBuildExtras = []
+    cordovaConfig = [:]
+  }
+}
+
 dependencies {
     implementation project(':capacitor-camera')
     implementation project(':capacitor-filesystem')

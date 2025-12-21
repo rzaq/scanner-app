@@ -13,8 +13,8 @@
     "cap:sync": "npx cap sync android",
     "android:build": "cd android && ./gradlew assembleDebug",
     "android:release": "cd android && ./gradlew assembleRelease",
-    "build:apk": "npm run build && npm run cap:sync && npm run android:build",
-    "build:apk:release": "npm run build && npm run cap:sync && npm run android:release"
+    "build:apk": "pnpm run build && pnpm run cap:sync && pnpm run android:build",
+    "build:apk:release": "pnpm run build && pnpm run cap:sync && pnpm run android:release"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",

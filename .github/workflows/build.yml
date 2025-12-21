@@ -48,6 +48,13 @@ jobs:
           chmod +x gradlew
           ls -la gradlew
 
+      - name: Create local.properties
+        working-directory: ./android
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "=== local.properties Created ==="
+          cat local.properties
+
       - name: Verify Web Build Output
         run: |
           echo "=== Verifying Web Build ==="

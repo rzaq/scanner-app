@@ -72,13 +72,20 @@ jobs:
           echo "=== Build Output ==="
           ls -lah dist/
 
-      - name: Check Gradle Wrapper
+      - name: Check gradle wrapper
         working-directory: ./android
         run: |
           echo "=== Gradle Wrapper Status ==="
           ls -la gradlew
           file gradlew
           head -5 gradlew
+
+      - name: Create local.properties for testing
+        working-directory: ./android
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "=== local.properties Created ==="
+          cat local.properties
 
       - name: Check variables.gradle
         working-directory: ./android

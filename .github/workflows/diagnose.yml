@@ -1,0 +1,125 @@
+name: Diagnose Build Issues
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.4.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
+
+      - name: Print Environment Variables
+        run: |
+          echo "=== Environment Variables ==="
+          echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
+          echo "ANDROID_HOME: $ANDROID_HOME"
+          echo "PATH: $PATH"
+
+      - name: Check Android SDK
+        run: |
+          echo "=== Android SDK Directory ==="
+          ls -la "$ANDROID_SDK_ROOT/" 2>/dev/null | head -20 || echo "Directory not found"
+          echo ""
+          echo "=== Available Android Versions ==="
+          ls -la "$ANDROID_SDK_ROOT/platforms" 2>/dev/null || echo "Platforms not found"
+          echo ""
+          echo "=== Build Tools ==="
+          ls -la "$ANDROID_SDK_ROOT/build-tools" 2>/dev/null || echo "Build tools not found"
+
+      - name: Check Java
+        run: |
+          echo "=== Java Version ==="
+          java -version
+          echo ""
+          echo "=== Javac Version ==="
+          javac -version
+
+      - name: Install dependencies
+        run: |
+          echo "=== Installing Node Dependencies ==="
+          pnpm install --frozen-lockfile
+
+      - name: Build Web App
+        run: |
+          echo "=== Building Web App ==="
+          pnpm build
+          echo ""
+          echo "=== Build Output ==="
+          ls -lah dist/
+
+      - name: Check Gradle Wrapper
+        working-directory: ./android
+        run: |
+          echo "=== Gradle Wrapper Status ==="
+          ls -la gradlew
+          file gradlew
+          head -5 gradlew
+
+      - name: Check variables.gradle
+        working-directory: ./android
+        run: |
+          echo "=== variables.gradle Content ==="
+          cat variables.gradle
+
+      - name: Check compileSdkVersion
+        working-directory: ./android
+        run: |
+          echo "=== compileSdkVersion Check ==="
+          grep -i compileSdk app/build.gradle
+          grep -i compileSdk build.gradle
+
+      - name: Gradle Version Check
+        working-directory: ./android
+        run: |
+          echo "=== Gradle Wrapper Version ==="
+          ./gradlew --version
+
+      - name: List Android Projects
+        working-directory: ./android
+        run: |
+          echo "=== Android Project Structure ==="
+          ls -la
+          echo ""
+          echo "=== Capacitor Android Module ==="
+          ls -la capacitor-cordova-android-plugins/src/main 2>/dev/null || echo "Not found"
+
+      - name: Try Clean Build (Verbose)
+        working-directory: ./android
+        continue-on-error: true
+        run: |
+          echo "=== Attempting Clean Build ==="
+          ./gradlew clean --info 2>&1 | tail -50
+
+      - name: Check for google-services.json
+        run: |
+          echo "=== google-services.json Status ==="
+          if [ -f android/app/google-services.json ]; then
+            echo "✓ google-services.json exists"
+          else
+            echo "✗ google-services.json NOT found (optional, but can cause issues)"
+          fi

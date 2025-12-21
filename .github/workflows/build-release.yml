@@ -32,19 +32,16 @@ jobs:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
+      - name: � Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.4.1
+
       - name: 🟩 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 10.4.1
-          
-      - name: Add pnpm to PATH
-        run: echo "$(pnpm store path)" >> $GITHUB_PATH
 
       - name: ☕ Setup Java
         uses: actions/setup-java@v4

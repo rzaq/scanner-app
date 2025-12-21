@@ -36,6 +36,12 @@ jobs:
         with:
           accept-android-sdk-licenses: true
 
+      - name: Install Required Android SDK Components
+        run: |
+          echo "Installing Android SDK components..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-34" "build-tools;34.0.0" 2>&1 || true
+          echo "SDK components ready"
+
       - name: Install node dependencies
         run: pnpm install --frozen-lockfile
 
@@ -52,8 +58,11 @@ jobs:
         working-directory: ./android
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          echo "=== local.properties Created ==="
+          echo "=== local.properties ==="
           cat local.properties
+          echo ""
+          echo "=== Android SDK Directory ==="
+          ls -la $ANDROID_SDK_ROOT/ | head -15
 
       - name: Verify Web Build Output
         run: |
@@ -68,7 +77,10 @@ jobs:
 
       - name: Build Debug APK
         working-directory: ./android
-        run: ./gradlew assembleDebug --stacktrace -q
+        run: |
+          echo "=== Starting Gradle Build ==="
+          ./gradlew assembleDebug --stacktrace --info 2>&1 | tee build.log
+          echo "Build completed"
         env:
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
 
@@ -84,13 +96,11 @@ jobs:
           else
             echo "❌ APK not found at $APK_PATH"
             echo ""
-            echo "=== Contents of build output directory ==="
-            find android/app/build -type f -name "*.apk" 2>/dev/null || echo "No APK files found"
-            find android/app/build -type f -name "*.aab" 2>/dev/null || echo "No AAB files found"
-            
+            echo "=== Checking build directory ==="
+            find android/app/build -type d -name "outputs" 2>/dev/null || echo "No outputs directory found"
             echo ""
-            echo "=== Gradle output directory ==="
-            ls -la android/app/build/outputs/ 2>/dev/null || echo "No outputs directory"
+            echo "=== Last 50 lines of build.log ==="
+            tail -50 android/build.log 2>/dev/null || echo "No build.log found"
             exit 1
           fi
 

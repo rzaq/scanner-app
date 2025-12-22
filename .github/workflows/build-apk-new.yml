@@ -1,12 +1,15 @@
-name: Build APK
+name: Build & Deploy APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'  # Daily at midnight
+    inputs:
+      manual_trigger:
+        description: 'Manual trigger'
+        required: false
 
 jobs:
   build-apk:

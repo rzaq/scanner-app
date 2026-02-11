@@ -77,6 +77,7 @@ export default function Home() {
           </div>
 
           <div className="text-center z-10">
+            <h1 className="text-3xl font-bold text-primary mb-6 cyber-text-glow">مرحبا</h1>
             <ImageIcon className="w-16 h-16 mx-auto mb-4 text-primary/70 animate-pulse" />
             <h2 className="text-2xl font-mono font-bold text-primary mb-2 cyber-text-glow">SCANNER</h2>
             <p className="text-sm text-muted-foreground mb-8">Upload an image to get started</p>

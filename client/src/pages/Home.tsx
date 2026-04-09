@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { WebCamera } from '@/components/WebCamera';
 import { Editor } from '@/pages/Editor';
 import { Gallery } from '@/pages/Gallery';
+import { DeviceScan } from '@/pages/DeviceScan';
 import { saveImage, getFolders } from '@/lib/storage';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Upload, Image as ImageIcon } from 'lucide-react';
+import { Upload, Image as ImageIcon, ScanLine } from 'lucide-react';
 
-type AppState = 'camera' | 'editor' | 'gallery' | 'upload';
+type AppState = 'camera' | 'editor' | 'gallery' | 'upload' | 'device-scan';
 
 export default function Home() {
   const [appState, setAppState] = useState<AppState>('upload');
@@ -109,6 +110,16 @@ export default function Home() {
               <ImageIcon className="w-5 h-5 mr-2" />
               OPEN GALLERY
             </Button>
+
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="mt-4 border-accent/50 text-accent hover:bg-accent/20"
+              onClick={() => setAppState('device-scan')}
+            >
+              <ScanLine className="w-5 h-5 mr-2" />
+              افحص جهازي
+            </Button>
           </div>
         </div>
       )}
@@ -116,7 +127,8 @@ export default function Home() {
       {appState === 'camera' && isCameraAvailable && (
         <WebCamera 
           onCapture={handleCapture} 
-          onGallerySelect={() => setAppState('gallery')} 
+          onGallerySelect={() => setAppState('gallery')}
+          onDeviceScan={() => setAppState('device-scan')}
         />
       )}
 
@@ -132,6 +144,13 @@ export default function Home() {
         <Gallery 
           onBack={() => setAppState(isCameraAvailable ? 'camera' : 'upload')} 
           onSelectImage={handleGallerySelect} 
+        />
+      )}
+
+      {appState === 'device-scan' && (
+        <DeviceScan
+          onBack={() => setAppState(isCameraAvailable ? 'camera' : 'upload')}
+          onComplete={() => setAppState('gallery')}
         />
       )}
     </div>

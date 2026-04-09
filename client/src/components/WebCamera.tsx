@@ -1,15 +1,16 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { Button } from '@/components/ui/button';
-import { Camera, RefreshCw, Image as ImageIcon, Upload } from 'lucide-react';
+import { Camera, RefreshCw, Image as ImageIcon, Upload, ScanLine } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface WebCameraProps {
   onCapture: (imageSrc: string) => void;
   onGallerySelect?: () => void;
+  onDeviceScan?: () => void;
 }
 
-export function WebCamera({ onCapture, onGallerySelect }: WebCameraProps) {
+export function WebCamera({ onCapture, onGallerySelect, onDeviceScan }: WebCameraProps) {
   const webcamRef = useRef<Webcam>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
@@ -112,6 +113,20 @@ export function WebCamera({ onCapture, onGallerySelect }: WebCameraProps) {
           <div className="w-12 h-12" />
         </div>
 
+        {onDeviceScan && (
+          <div className="bg-black/60 flex items-center justify-center py-2 border-t border-primary/10">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-accent hover:text-accent/80 font-mono text-xs gap-1"
+              onClick={onDeviceScan}
+            >
+              <ScanLine className="w-4 h-4" />
+              افحص جهازي
+            </Button>
+          </div>
+        )}
+
         <input 
           ref={fileInputRef} 
           type="file" 
@@ -209,6 +224,20 @@ export function WebCamera({ onCapture, onGallerySelect }: WebCameraProps) {
           <RefreshCw className="w-6 h-6" />
         </Button>
       </div>
+
+      {onDeviceScan && (
+        <div className="bg-black/60 flex items-center justify-center py-2 border-t border-primary/10">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-accent hover:text-accent/80 font-mono text-xs gap-1"
+            onClick={onDeviceScan}
+          >
+            <ScanLine className="w-4 h-4" />
+            افحص جهازي
+          </Button>
+        </div>
+      )}
 
       <input 
         ref={fileInputRef} 
